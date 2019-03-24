@@ -89,14 +89,14 @@ void main() {
     int length = 0;
     for (int i=1; i<=cores; i++)
     {
-	length += snprintf(data + length, sizeof(data), "cpu_usage,host=RPi3,core=%d value=%f %lu\n", i-1, usage[0][i], (unsigned long)time(NULL));
+	length += snprintf(data + length, sizeof(data), "cpu_usage,host=RPi3b,core=%d value=%f\n", i-1, usage[0][i]);
 	if (length < 0)
 	{
 	    printf("Error while dumping data to char array");
 	    return;
 	}
     }
-    //printf("%s\n", data);
+//    printf("%s\n", data);
 
     curl = curl_easy_init();
     if(curl)
@@ -169,8 +169,9 @@ void main() {
 	else
 	    swappct = 100-(((double)(swaptotal - swapfree)/swaptotal)*100);
 
-        //printf("Mem Stats %f %f\n", (((double)usedMem/totalMem)*100), swappct);
-        snprintf(data, sizeof(data), "mem_usage,host=RPi3 value=%f %lu\n", (((double)usedMem/totalMem)*100), (unsigned long)time(NULL));
+//        printf("Mem Stats %f %f\n", (((double)usedMem/totalMem)*100), swappct);
+
+        snprintf(data, sizeof(data), "mem_usage,host=RPi3b value=%f\n", (((double)usedMem/totalMem)*100));
         curl = curl_easy_init();
         if(curl)
         {
@@ -185,7 +186,7 @@ void main() {
             curl_easy_cleanup(curl);
         }
 
-	snprintf(data, sizeof(data), "swp_usage,host=Rpi3 value=%f %lu\n", swappct, (unsigned long)time(NULL));
+	snprintf(data, sizeof(data), "swap_usage,host=Rpi3b value=%f\n", swappct);
         curl = curl_easy_init();
         if(curl)
         {
